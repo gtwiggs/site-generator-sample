@@ -4,20 +4,17 @@
 
 ## {{name}}
 
-{{#issues}}
- {{#hasLink}}
+	{{#issues}}
+		{{#hasLink}}
 
 ### {{name}} [{{issue}}]({{link}}) {{title}}
-
- {{/hasLink}}
- {{^hasLink}}
-
+	 	{{/hasLink}}
+		{{^hasLink}}
 ### {{name}}
-
- {{/hasLink}}
- {{#commits}}
+		{{/hasLink}}
+		{{#commits}}
 - [{{hash}}](https://git/{{hash}}) {{authorName}} *{{commitTime}}*  
 {{{message}}}
- {{/commits}}
-{{/issues}}
+		{{/commits}}
+	{{/issues}}
 {{/tags}}

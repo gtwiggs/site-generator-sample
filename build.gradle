@@ -52,26 +52,6 @@ task generateSiteIndex << {
 task gitChangelogTask(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask) {
 	filePath = "$generatedSiteDir.path/changelog.markdown";
 	templateContent = new File('src/site/changelog.mustache').getText('UTF-8');
-/*    templateContent = """
-   # Git Changelog Maven plugin changelog
-   Changelog of Git Changelog Maven plugin.
-   {{#tags}}
-   ## {{name}}
-    {{#issues}}
-     {{#hasLink}}
-   ### {{name}} [{{issue}}]({{link}}) {{title}}
-     {{/hasLink}}
-     {{^hasLink}}
-   ### {{name}}
-     {{/hasLink}}
-     {{#commits}}
-   [{{hash}}](https://github.com/tomasbjerre/git-changelog-maven-plugin/commit/{{hash}}) {{authorName}} *{{commitTime}}*
-   {{{message}}}
-     {{/commits}}
-    {{/issues}}
-   {{/tags}}
-    """;
-*/
 }
 
 javadoc {
