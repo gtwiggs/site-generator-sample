@@ -1,0 +1,91 @@
+plugins {
+  id "org.kordamp.markdown.convert" version "1.1.0"
+  id "se.bjurr.gitchangelog.git-changelog-gradle-plugin" version "1.27"
+}
+
+apply plugin: 'java'
+apply plugin: 'application'
+
+mainClassName = 'com.glenntwiggs.hello.Main'
+
+//+ Unused dependency to test site generation
+
+apply plugin: 'maven'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile 'junit:junit:4.12'
+}
+
+//- end
+
+File siteDir = file "$buildDir/site"
+File generatedSiteDir = file "$buildDir/generated/markdown"
+
+task site {
+	dependsOn(markdownToHtml, javadoc)
+}
+
+task generateSiteIndex << {
+	generatedSiteDir.mkdirs()
+	def index = new File(generatedSiteDir, "index.markdown")
+	index.createNewFile()
+	index << "# Project $project.name\n"
+	index << '\n[Javadoc](javadoc/index.html)\n'
+
+	index << "\n# Project dependencies\n"
+
+	project.configurations.each { conf ->
+		if (!conf.empty) {
+			index << "\n## Configuration $conf.name\n"
+			conf.each { dep ->
+				index << "- $dep\n"
+			}
+		}
+	}
+}
+
+task gitChangelogTask(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask) {
+	filePath = "CHANGELOG.md";
+/*	templateContent = new File('changelog.mustache').getText('UTF-8');*/
+    templateContent = """
+   # Git Changelog Maven plugin changelog
+   Changelog of Git Changelog Maven plugin.
+   {{#tags}}
+   ## {{name}}
+    {{#issues}}
+     {{#hasLink}}
+   ### {{name}} [{{issue}}]({{link}}) {{title}}
+     {{/hasLink}}
+     {{^hasLink}}
+   ### {{name}}
+     {{/hasLink}}
+     {{#commits}}
+   [{{hash}}](https://github.com/tomasbjerre/git-changelog-maven-plugin/commit/{{hash}}) {{authorName}} *{{commitTime}}*
+   {{{message}}}
+     {{/commits}}
+    {{/issues}}
+   {{/tags}}
+    """;
+}
+
+javadoc {
+	options {
+		showAll()
+		header = "Header"
+		footer = "Footer"
+		overview = "src/site/overview.html"
+		windowTitle = "Window Title"
+	}
+	destinationDir = new File(siteDir, 'javadoc')
+}
+
+markdownToHtml {
+	dependsOn(generateSiteIndex)
+	outputDir = siteDir
+	sourceDir = generatedSiteDir
+}
+
