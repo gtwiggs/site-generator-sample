@@ -1,0 +1,23 @@
+# Git Changelog
+
+{{#tags}}
+
+## {{name}}
+
+{{#issues}}
+ {{#hasLink}}
+
+### {{name}} [{{issue}}]({{link}}) {{title}}
+
+ {{/hasLink}}
+ {{^hasLink}}
+
+### {{name}}
+
+ {{/hasLink}}
+ {{#commits}}
+- [{{hash}}](https://git/{{hash}}) {{authorName}} *{{commitTime}}*  
+{{{message}}}
+ {{/commits}}
+{{/issues}}
+{{/tags}}

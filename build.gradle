@@ -35,6 +35,7 @@ task generateSiteIndex << {
 	index.createNewFile()
 	index << "# Project $project.name\n"
 	index << '\n[Javadoc](javadoc/index.html)\n'
+	index << '\n[Changelog](changelog.html)\n'
 
 	index << "\n# Project dependencies\n"
 
@@ -49,9 +50,9 @@ task generateSiteIndex << {
 }
 
 task gitChangelogTask(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask) {
-	filePath = "CHANGELOG.md";
-/*	templateContent = new File('changelog.mustache').getText('UTF-8');*/
-    templateContent = """
+	filePath = "$generatedSiteDir.path/changelog.markdown";
+	templateContent = new File('src/site/changelog.mustache').getText('UTF-8');
+/*    templateContent = """
    # Git Changelog Maven plugin changelog
    Changelog of Git Changelog Maven plugin.
    {{#tags}}
@@ -70,6 +71,7 @@ task gitChangelogTask(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask
     {{/issues}}
    {{/tags}}
     """;
+*/
 }
 
 javadoc {
@@ -84,7 +86,7 @@ javadoc {
 }
 
 markdownToHtml {
-	dependsOn(generateSiteIndex)
+	dependsOn(generateSiteIndex, gitChangelogTask)
 	outputDir = siteDir
 	sourceDir = generatedSiteDir
 }
