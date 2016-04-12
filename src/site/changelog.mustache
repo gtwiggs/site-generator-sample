@@ -13,8 +13,11 @@
 ### {{name}}
 		{{/hasLink}}
 		{{#commits}}
-- [{{hash}}](https://git/{{hash}}) {{authorName}} *{{commitTime}}*  
-{{{message}}}
+- **`{{hash}}`** [{{authorName}}]({{authorEmailAddress}}) {{commitTime}}  
+{{messageTitle}}
+{{#messageBodyItems}}
+	{{.}}
+{{/messageBodyItems}}
 		{{/commits}}
 	{{/issues}}
 {{/tags}}
