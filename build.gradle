@@ -53,8 +53,9 @@ task generateSiteIndex << {
 task gitChangelogTask(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask) {
 	filePath = "$generatedSiteDir.path/changelog.markdown";
 	templateContent = new File('src/site/changelog.mustache').getText('UTF-8');
-	fromRef = "master";//"1.0";
-	toRef = "test";//"1.1";
+	// Branch names work as references.
+	fromRef = "master";
+	toRef = "test";
  }
 
 javadoc {
