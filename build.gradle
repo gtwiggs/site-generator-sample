@@ -32,6 +32,7 @@ task site {
 task generateSiteIndex << {
 	generatedSiteDir.mkdirs()
 	def index = new File(generatedSiteDir, "index.markdown")
+	index.delete()
 	index.createNewFile()
 	index << "# Project $project.name\n"
 	index << '\n[Javadoc](javadoc/index.html)\n'
